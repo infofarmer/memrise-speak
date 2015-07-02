@@ -9,12 +9,29 @@
   <script src="//www.parsecdn.com/js/parse-1.4.2.min.js"></script>
   <script type="text/javascript">
     Parse.initialize("pGhmRBRxkBiYlsdIszeEnEGKFL4NqcG4nRhkjaia", "UXOdtpqllOUQD3qcBvpa5ZnMg8kekFFGIM6YXy9a");
+    var VoiceData = Parse.Object.extend("VoiceData");
+    var vd = new VoiceData();
     $(document).ready(function() {
       var ss = speechSynthesis;
       var vtimer = setInterval(function () {
           var vs = ss.getVoices();
           if (vs.length > 0) {
+              var simplevoice = [];
               clearInterval(vtimer);
+              vs.forEach(function(el){
+                simplevoice.push(
+                    [ el.voiceURI, el.name, el.lang, el.localService ])
+              });
+              vd.set("data", simplevoice);
+              vd.set("count", vs.length);
+              vd.set("ua", navigator.userAgent);
+              vd.save(null, {
+                  success: function(vd) { },
+                    error: function(vd, error) {
+                          alert('Failed to create new object, with error code: ' + error.message);
+                            }
+              });
+              console.log(vd);
               $('#demo').html( '<table cellpadding="0" cellspacing="0" border="0" class="display" id="voices"></table>' );
 
               $('#voices').dataTable( {
