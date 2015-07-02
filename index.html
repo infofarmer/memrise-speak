@@ -12,6 +12,10 @@
     var VoiceData = Parse.Object.extend("VoiceData");
     var vd = new VoiceData();
     $(document).ready(function() {
+      if (typeof(speechSynthesis) === 'undefined') {
+        $('#demo').html( '<h2>Speech Synthesis support not present.</h2>' );
+        return;
+      }
       var ss = speechSynthesis;
       var vtimer = setInterval(function () {
           var vs = ss.getVoices();
