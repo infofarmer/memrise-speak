@@ -5,23 +5,49 @@
 // @match          http://www.memrise.com/course/*/garden/*
 // @match          http://www.memrise.com/garden/water/*
 // @match          http://www.memrise.com/garden/review/*
-// @version        0.0.3
+// @version        0.0.4
 // @updateURL      https://github.com/infofarmer/memrise-speak/raw/master/MemriseSpeak.user.js
 // @downloadURL    https://github.com/infofarmer/memrise-speak/raw/master/MemriseSpeak.user.js
 // @grant          none
 // ==/UserScript==
 
+// cat bcp47-memrise|while read a b;do echo "'$b': '$a',";done
 window.langs = {
-    'mandarin-chinese-simplified': 'zh',
-    'english': 'en',
-    'japanese': 'ja',
-    'kanji': 'ja',
-}
-
-window.voices = {
-    'zh': 'Ting-Ting',
-    'en': 'Alex',
-    'ja': 'Kyoko',
+'arabic': 'ar-SA',
+'czech': 'cs-CZ',
+'danish': 'da-DK',
+'german': 'de-DE',
+'greek': 'el-GR',
+'english': 'en-US',
+'spanish': 'es-ES',
+'finnish': 'fi-FI',
+'french': 'fr-FR',
+'hebrew': 'he-IL',
+'hindi': 'hi-IN',
+'hungarian': 'hu-HU',
+'indonesian': 'id-ID',
+'italian': 'it-IT',
+'japanese': 'ja-JP',
+'kanji': 'ja-JP',
+'romaji': 'ja-JP',
+'korean': 'ko-KR',
+'norwegian': 'nb-NO',
+'flemish': 'nl-BE',
+'dutch': 'nl-NL',
+'polish': 'pl-PL',
+'portuguese-brazil': 'pt-BR',
+'portuguese-european': 'pt-PT',
+'romanian': 'ro-RO',
+'russian': 'ru-RU',
+'slovak': 'sk-SK',
+'slovenian': 'sv-SE',
+'thai': 'th-TH',
+'turkish': 'tr-TR',
+'mandarin-chinese-simplified': 'zh-CN',
+'mandarin-spoken-only': 'zh-CN',
+'cantonese': 'zh-HK',
+'cantonese-jyutping': 'zh-HK',
+'mandarin-chinese-traditional': 'zh-TW'
 }
 
 window.apoolcol = {
@@ -56,6 +82,26 @@ Object.filter = function( obj, predicate) {
     return result;
 };
 
+// First prefer local, then default.
+// In Safari high quality versions are the default.
+window.prefnum = function(voice) {
+    var x = 0;
+    if (voice.localService) x += 100;
+    if (voice.default) x += 10;
+    return x;
+}
+
+// Reverse sort.
+window.langpref = function(a, b) {
+    return (window.prefnum(a) < window.prefnum(b));
+}
+
+window.langvoice = function(lang,voices) {
+    return voices
+        .filter(function(voice) { return voice.lang == lang; })
+        .sort(window.langpref)[0];
+}
+
 window.sp2 = function (text,lang,v) {
     var t = new SpeechSynthesisUtterance();
     var ss = window.speechSynthesis;
@@ -68,7 +114,7 @@ window.sp2 = function (text,lang,v) {
         var vs = ss.getVoices();
         if (vs.length > 0) {
             clearInterval(vtimer);
-            t.voice = vs.filter(function(voice) { return voice.name == v; })[0];
+            t.voice = langvoice(lang,vs);
             ss.speak(t);
         }
     }, 100);
@@ -82,13 +128,13 @@ window.ttsplay = function () {
     text1 = MEMRISE.garden.box.thing.columns[1].val;
     if (typeof(MEMRISE.garden.session.course) !== 'undefined') {
         lang0 = MEMRISE.garden.session.course.target.slug;
-    } else { 
+    } else {
         lang0 = MEMRISE.garden.session.category.slug;
     }
+    lang0 = lang0.replace(/-[0-9]/, '');
     lang1 = window.langs[lang0];
-    voice1 = window.voices[lang1];
-    window.sp2(text1, lang1, voice1);
-    console.log("memrise speak spoke «" + text1 + "» in «" + lang1 +"», voice «" + voice1 + "».");
+    window.sp2(text1, lang1);
+    console.log("memrise speak spoke «" + text1 + "» in «" + lang1 +"».");
 }
 
 MEMRISE.audioPlayer.play = window.ttsplay;
