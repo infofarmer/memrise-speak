@@ -14,4 +14,4 @@ Further plans:
 - dictation!
 
 Installation link:
-https://github.com/infofarmer/memrise-speak/raw/master/MemriseSpeak.user.js
+http://infofarmer.github.io/memrise-speak/MemriseSpeak.user.js
