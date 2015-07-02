@@ -6,14 +6,11 @@ local speech engine is leveraged, which means audio is played instantly
 and in relatively high quality.
 
 Current limitations:
-- only works in desktop Chrome
+- only works in desktop Chrome and Safari
 - best works on OS X
-- tested on a few popular Chinese and Japanese courses
-- other languages will need to be added manually
-- only tested in review mode
 
 Further plans:
-- support all languages
+- support more languages and synthesis options
 - dictation!
 
 Installation link:
