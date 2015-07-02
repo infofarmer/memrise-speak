@@ -1,0 +1,42 @@
+//
+// Manually composed map between bcp47 tags used for voices in Safari
+// and Chrome, and Memrise languages. Both bcp47 and Memrise have many
+// more languages, but these are the only supported by browsers on
+// OS X as of July 2015.
+//
+
+ar-SA arabic
+cs-CZ czech
+da-DK danish
+de-DE german
+el-GR greek
+en-US english
+es-ES spanish
+fi-FI finnish
+fr-FR french
+he-IL hebrew
+hi-IN hindi
+hu-HU hungarian
+id-ID indonesian
+it-IT italian
+ja-JP japanese
+ja-JP kanji
+ja-JP romaji
+ko-KR korean
+nb-NO norwegian
+nl-BE flemish
+nl-NL dutch
+pl-PL polish
+pt-BR portuguese-brazil
+pt-PT portuguese-european
+ro-RO romanian
+ru-RU russian
+sk-SK slovak
+sv-SE slovenian
+th-TH thai
+tr-TR turkish
+zh-CN mandarin-chinese-simplified
+zh-CN mandarin-spoken-only
+zh-HK cantonese
+zh-HK cantonese-jyutping
+zh-TW mandarin-chinese-traditional
