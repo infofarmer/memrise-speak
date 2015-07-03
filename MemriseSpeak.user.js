@@ -5,7 +5,7 @@
 // @match          http://www.memrise.com/course/*/garden/*
 // @match          http://www.memrise.com/garden/water/*
 // @match          http://www.memrise.com/garden/review/*
-// @version        0.0.4
+// @version        0.0.5
 // @updateURL      https://github.com/infofarmer/memrise-speak/raw/master/MemriseSpeak.user.js
 // @downloadURL    https://github.com/infofarmer/memrise-speak/raw/master/MemriseSpeak.user.js
 // @grant          none
@@ -110,10 +110,17 @@ window.sp2 = function (text,lang,v) {
     t.lang = lang;
     t.rate = 0.8;
     t.volume = 1;
+    if (window.voicecount > 0) {
+        t.voice = langvoice(lang,vs);
+        ss.speak(t);
+        return;
+    }
     var vtimer = setInterval(function () {
         var vs = ss.getVoices();
         if (vs.length > 0) {
             clearInterval(vtimer);
+            window.vs = vs;
+            window.voicecount = vs.length;
             t.voice = langvoice(lang,vs);
             ss.speak(t);
         }
