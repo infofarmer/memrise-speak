@@ -5,7 +5,7 @@
 // @match          http://www.memrise.com/course/*/garden/*
 // @match          http://www.memrise.com/garden/water/*
 // @match          http://www.memrise.com/garden/review/*
-// @version        0.0.5
+// @version        0.0.6
 // @updateURL      https://github.com/infofarmer/memrise-speak/raw/master/MemriseSpeak.user.js
 // @downloadURL    https://github.com/infofarmer/memrise-speak/raw/master/MemriseSpeak.user.js
 // @grant          none
@@ -153,6 +153,10 @@ setInterval(function(){
     // do nothing if box not loaded yet
     if ( typeof(MEMRISE.garden.box) === 'undefined' ) return;
 
+    // do only once per thing
+    if ( typeof(mgb.speakpatch) !== 'undefined' ) return;
+    mgb.speakpatch = true;
+
     // replace all audio playback with TTS
     mgb.play_random_audio = ttsplay;
     mgb.play_hidden_audio = ttsplay;
@@ -166,11 +170,16 @@ setInterval(function(){
             t.columns[akey].val = [
                 { id: 1, url: "fake" }
                 ];
-            mgb.render();
+            if ( mgb.template === 'presentation' ) {
+                mgb.render();
+            }
         }
     } else {
         mgb.pool.columns[77] = window.apoolcol;
         mgb.thing.columns[77] = window.athingcol;
+        if ( mgb.template === 'presentation' ) {
+            mgb.render();
+        }
     }
 }, 200);
 
