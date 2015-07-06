@@ -5,7 +5,7 @@
 // @match          http://www.memrise.com/course/*/garden/*
 // @match          http://www.memrise.com/garden/water/*
 // @match          http://www.memrise.com/garden/review/*
-// @version        0.0.6
+// @version        0.0.7
 // @updateURL      https://github.com/infofarmer/memrise-speak/raw/master/MemriseSpeak.user.js
 // @downloadURL    https://github.com/infofarmer/memrise-speak/raw/master/MemriseSpeak.user.js
 // @grant          none
@@ -103,8 +103,8 @@ window.langvoice = function(lang,voices) {
 }
 
 window.sp2 = function (text,lang,v) {
-    var t = new SpeechSynthesisUtterance();
     var ss = window.speechSynthesis;
+    var t = window.sp2.utter;
     if (typeof(ss) == 'undefined') return;
     t.text = text;
     t.lang = lang;
@@ -112,6 +112,7 @@ window.sp2 = function (text,lang,v) {
     t.volume = 1;
     if (window.voicecount > 0) {
         t.voice = langvoice(lang,vs);
+        ss.cancel(t);
         ss.speak(t);
         return;
     }
@@ -122,11 +123,13 @@ window.sp2 = function (text,lang,v) {
             window.vs = vs;
             window.voicecount = vs.length;
             t.voice = langvoice(lang,vs);
+            ss.cancel(t);
             ss.speak(t);
         }
     }, 100);
 }
 
+window.sp2.utter = new SpeechSynthesisUtterance();
 
 window.ttsplay = function () {
     console.log('ttsplay');
